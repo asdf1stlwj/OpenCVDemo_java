@@ -38,7 +38,8 @@ public class MainActivity extends Activity {
         myAdapter=new MyListViewAdapter(this);
         lv_items.setAdapter(myAdapter);
         myAdapter.getModel().add(new CommonData(CommandConstants.TEST_ENV_COMMAND,1));
-        myAdapter.getModel().add(new CommonData(CommandConstants.PIXEL_INVERT_COMMAND,2));
+        myAdapter.getModel().add(new CommonData(CommandConstants.MAT_PIXEL_INVERT_COMMAND,2));
+        myAdapter.getModel().add(new CommonData(CommandConstants.BITMAP_PIXEL_INVERT_COMMAND,3));
         myAdapter.notifyDataSetChanged();
 
     }
