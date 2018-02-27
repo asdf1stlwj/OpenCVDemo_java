@@ -7,7 +7,7 @@
 /build
 /captures
 .externalNativeBuild
+.idea/misc.xml
 .idea/vcs.xml
-openCVLibrary2411/build/generated/source/buildConfig/release/org/opencv/BuildConfig.java
-openCVLibrary2411/build/intermediates/incremental/mergeReleaseJniLibFolders/merger.xml
-openCVLibrary2411/build/outputs/aar/openCVLibrary2411-release.aar
+.idea/misc.xml
+
