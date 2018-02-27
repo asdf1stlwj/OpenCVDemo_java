@@ -71,6 +71,10 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
                     temp=ImageProcessHelper.invert(temp);
                 }else if (commond.equals(CommandConstants.BITMAP_PIXEL_INVERT_COMMAND)){
                     ImageProcessHelper.localInvert(temp);
+                }else if(commond.equals(CommandConstants.BITMAP_PIXEL_SUBSTRACT_COMMAND)){
+                    ImageProcessHelper.substract(temp);
+                }else if (commond.equals(CommandConstants.BITMAP_PIXEL_ADD_COMMAND)){
+                    ImageProcessHelper.add(temp);
                 }
                 if (temp!=null){
                     iv_test.setImageBitmap(temp);

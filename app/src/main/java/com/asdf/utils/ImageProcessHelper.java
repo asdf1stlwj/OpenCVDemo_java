@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 /**
@@ -89,5 +90,25 @@ public class ImageProcessHelper {
             }
         }
         bitmap.setPixels(pixels,0,width,0,0,width,height);
+    }
+
+    public static void substract(Bitmap bitmap){
+        Mat src=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        Mat whiteImg=new Mat(src.size(),src.type(), Scalar.all(255));
+        Core.subtract(whiteImg,src,src);
+        Utils.matToBitmap(src,bitmap);
+        src.release();
+        whiteImg.release();
+    }
+
+    public static void add(Bitmap bitmap){
+        Mat src=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        Mat blackImg=new Mat(src.size(),src.type(), Scalar.all(0));
+        Core.addWeighted(blackImg,0.5,src,0.5,0.0,src);
+        Utils.matToBitmap(src,bitmap);
+        src.release();
+        blackImg.release();
     }
 }

@@ -40,6 +40,8 @@ public class MainActivity extends Activity {
         myAdapter.getModel().add(new CommonData(CommandConstants.TEST_ENV_COMMAND,1));
         myAdapter.getModel().add(new CommonData(CommandConstants.MAT_PIXEL_INVERT_COMMAND,2));
         myAdapter.getModel().add(new CommonData(CommandConstants.BITMAP_PIXEL_INVERT_COMMAND,3));
+        myAdapter.getModel().add(new CommonData(CommandConstants.BITMAP_PIXEL_SUBSTRACT_COMMAND,4));
+        myAdapter.getModel().add(new CommonData(CommandConstants.BITMAP_PIXEL_ADD_COMMAND,5));
         myAdapter.notifyDataSetChanged();
 
     }
