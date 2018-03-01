@@ -4,7 +4,9 @@ import android.graphics.Bitmap;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
@@ -92,16 +94,24 @@ public class ImageProcessHelper {
         bitmap.setPixels(pixels,0,width,0,0,width,height);
     }
 
+    /**
+     * 像素点减法,减去一张白色图片rgb(255,255,255)相当于减少亮度
+     * @param bitmap
+     */
     public static void substract(Bitmap bitmap){
         Mat src=new Mat();
         Utils.bitmapToMat(bitmap,src);
         Mat whiteImg=new Mat(src.size(),src.type(), Scalar.all(255));
-        Core.subtract(whiteImg,src,src);
+        Core.subtract(whiteImg,src,src);//相当于取反,255-whiteImg嘛
         Utils.matToBitmap(src,bitmap);
         src.release();
         whiteImg.release();
     }
 
+    /**
+     * 像素点加法,加一张白色图片rgb(255,255,255)相当于增加亮度,加减一张黑色图片rgb(0,0,0)没有任何变化
+     * @param bitmap
+     */
     public static void add(Bitmap bitmap){
         Mat src=new Mat();
         Utils.bitmapToMat(bitmap,src);
@@ -110,5 +120,52 @@ public class ImageProcessHelper {
         Utils.matToBitmap(src,bitmap);
         src.release();
         blackImg.release();
+    }
+
+    /**
+     * 像素点乘法,相当于改变对比度,例如放大后像素点之间的差值越来越大,因此对比度加大,反之亦然
+     * @param bitmap
+     */
+    public static void adjustConstant(Bitmap bitmap){
+        Mat src=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        src.convertTo(src, CvType.CV_32F);
+        Mat bwImg=new Mat(src.size(),src.type(),Scalar.all(0.6));
+        Mat whiteImg=new Mat(src.size(),src.type(),Scalar.all(30));
+        Core.multiply(bwImg,src,src);
+        Core.add(src,whiteImg,src);
+        src.convertTo(src, CvType.CV_8U);
+        Utils.matToBitmap(src,bitmap);
+        src.release();
+        bwImg.release();
+        whiteImg.release();
+    }
+
+    public static Bitmap demoMatUsage(){
+//        Mat src=new Mat();
+//        Utils.bitmapToMat(bitmap,src);
+//        Mat dst=new Mat(src.size(),src.type(),Scalar.all(127));
+        Bitmap bitmap=Bitmap.createBitmap(400,600, Bitmap.Config.ARGB_8888);
+        //CV_8UC3:8位unsigned char 3通道
+        //注意这个函数里是N通道的话，Scalar就输N个参数
+        Mat dst=new Mat(bitmap.getHeight(),bitmap.getWidth(),CvType.CV_8UC3,Scalar.all(127));
+        Utils.matToBitmap(dst,bitmap);
+        dst.release();
+        return bitmap;
+    }
+
+    public static Bitmap getROIArea(Bitmap bitmap){
+        Rect roi=new Rect(200,400,300,600);
+        Bitmap roiBitmap=Bitmap.createBitmap(roi.width,roi.height, Bitmap.Config.ARGB_8888);
+        Mat src=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        Mat roiMat=src.submat(roi);
+        Mat roiDstMat=new Mat();
+        Imgproc.cvtColor(roiMat,roiDstMat,Imgproc.COLOR_BGR2GRAY);
+        Utils.matToBitmap(roiDstMat,roiBitmap);
+        src.release();
+        roiMat.release();
+        roiDstMat.release();
+        return roiBitmap;
     }
 }

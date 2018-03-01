@@ -42,6 +42,9 @@ public class MainActivity extends Activity {
         myAdapter.getModel().add(new CommonData(CommandConstants.BITMAP_PIXEL_INVERT_COMMAND,3));
         myAdapter.getModel().add(new CommonData(CommandConstants.BITMAP_PIXEL_SUBSTRACT_COMMAND,4));
         myAdapter.getModel().add(new CommonData(CommandConstants.BITMAP_PIXEL_ADD_COMMAND,5));
+        myAdapter.getModel().add(new CommonData(CommandConstants.ADJUST_CONTRAST_COMMAND,6));
+        myAdapter.getModel().add(new CommonData(CommandConstants.IMAGE_COIAINER_COMMAND,7));
+        myAdapter.getModel().add(new CommonData(CommandConstants.SUB_IMAGE_COMMAND,8));
         myAdapter.notifyDataSetChanged();
 
     }
