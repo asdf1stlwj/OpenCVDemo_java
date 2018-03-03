@@ -13,4 +13,7 @@ public class CommandConstants {
     public static final String ADJUST_CONTRAST_COMMAND ="调整对比度和亮度";
     public static final String IMAGE_COIAINER_COMMAND ="图像容器-Mat";
     public static final String SUB_IMAGE_COMMAND ="图像容器-获取子图";
+    public static final String BLUR_IMAGE_COMMAND ="均值模糊";
+    public static final String GUASSION_BLUR_COMMAND ="高斯模糊";
+    public static final String BI_BLUR_COMMAND ="双边模糊";
 }

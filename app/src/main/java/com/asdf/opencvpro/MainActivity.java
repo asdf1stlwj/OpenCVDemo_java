@@ -45,6 +45,9 @@ public class MainActivity extends Activity {
         myAdapter.getModel().add(new CommonData(CommandConstants.ADJUST_CONTRAST_COMMAND,6));
         myAdapter.getModel().add(new CommonData(CommandConstants.IMAGE_COIAINER_COMMAND,7));
         myAdapter.getModel().add(new CommonData(CommandConstants.SUB_IMAGE_COMMAND,8));
+        myAdapter.getModel().add(new CommonData(CommandConstants.BLUR_IMAGE_COMMAND,9));
+        myAdapter.getModel().add(new CommonData(CommandConstants.GUASSION_BLUR_COMMAND,10));
+        myAdapter.getModel().add(new CommonData(CommandConstants.BI_BLUR_COMMAND,11));
         myAdapter.notifyDataSetChanged();
 
     }

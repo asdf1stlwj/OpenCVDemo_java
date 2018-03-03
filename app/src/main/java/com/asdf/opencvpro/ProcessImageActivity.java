@@ -81,8 +81,13 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
                     temp=ImageProcessHelper.demoMatUsage();
                 }else if (commond.equals(CommandConstants.SUB_IMAGE_COMMAND)){
                     temp=ImageProcessHelper.getROIArea(temp);
+                }else if (commond.equals(CommandConstants.BLUR_IMAGE_COMMAND)){
+                    ImageProcessHelper.meanBlur(temp);
+                }else if (commond.equals(CommandConstants.GUASSION_BLUR_COMMAND)){
+                    ImageProcessHelper.gaussianBlur(temp);
+                }else if (commond.equals(CommandConstants.BI_BLUR_COMMAND)){
+                    ImageProcessHelper.biBlur(temp);
                 }
-
                 if (temp!=null){
                     iv_test.setImageBitmap(temp);
                 }

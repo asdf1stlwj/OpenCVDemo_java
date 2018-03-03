@@ -6,8 +6,10 @@ import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
 /**
@@ -167,5 +169,46 @@ public class ImageProcessHelper {
         roiMat.release();
         roiDstMat.release();
         return roiBitmap;
+    }
+
+    //均值模糊
+    public static void meanBlur(Bitmap bitmap){
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        //这里size类中width为1代表纵向模糊,类似上下快速抖动(社保),height同理
+        Imgproc.blur(src,dst,new Size(15,15),new Point(-1,-1),Imgproc.BORDER_DEFAULT);
+        Utils.matToBitmap(dst,bitmap);
+        src.release();
+        dst.release();
+    }
+
+    //高斯模糊
+    public static void gaussianBlur(Bitmap bitmap){
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        //这里的Size参数可以设为(0,0),此时由后面的sigmaX,sigmaY决定滤波器的值系数,若size参数有指定,
+        //则无视后面的sigmaX,sigmaY(实际上有一个固定的公式决定)
+        //另外这个Size参数必须为奇数,否则有可能会报错
+        Imgproc.GaussianBlur(src,dst,new Size(15,15),0,0,Imgproc.BORDER_DEFAULT);
+        Utils.matToBitmap(dst,bitmap);
+        src.release();
+        dst.release();
+    }
+
+    //双边模糊
+    public static void biBlur(Bitmap bitmap){
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        Imgproc.cvtColor(src,src,Imgproc.COLOR_BGRA2BGR);//4通道(ARGB)转3通道(RGB)
+        Imgproc.bilateralFilter(src,dst,15,150,15,Imgproc.BORDER_DEFAULT);//该函数只认单通道和三通道
+        Mat kernel=new Mat(3,3,CvType.CV_16S);
+        kernel.put(0,0,0,-1,0,-1,5,-1,0,-1,0);
+        Imgproc.filter2D(dst,dst,-1,kernel,new Point(-1,-1),0.0,Imgproc.BORDER_DEFAULT);
+        Utils.matToBitmap(dst,bitmap);
+        src.release();
+        dst.release();
     }
 }
