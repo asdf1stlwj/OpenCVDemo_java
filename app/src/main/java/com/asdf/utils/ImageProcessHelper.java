@@ -243,4 +243,22 @@ public class ImageProcessHelper {
         }
         return kernel;
     }
+
+    //自定义算子应用
+    public static void erodeOrDilate(String commond,Bitmap bitmap){
+        boolean erode=commond.equals(CommandConstants.ERODE_COMMAND);
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        Mat structElement=Imgproc.getStructuringElement(Imgproc.CV_SHAPE_RECT,new Size(3,3),new Point(-1,-1));
+        if (erode){
+            Imgproc.erode(src,dst,structElement,new Point(-1,-1),1);
+        }else {
+            Imgproc.dilate(src,dst,structElement,new Point(-1,-1),1);
+        }
+        Utils.matToBitmap(dst,bitmap);
+        src.release();
+        dst.release();
+        structElement.release();
+    }
 }

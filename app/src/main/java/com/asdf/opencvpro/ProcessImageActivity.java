@@ -91,6 +91,9 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
                           commond.equals(CommandConstants.CUSTOM_EDGE_COMMAND)||
                           commond.equals(CommandConstants.CUSTOM_SHARPEN_COMMAND)){
                     ImageProcessHelper.customFilter(commond,temp);
+                }else if (commond.equals(CommandConstants.ERODE_COMMAND)||
+                        commond.equals(CommandConstants.DILATE_COMMAND)){
+                    ImageProcessHelper.erodeOrDilate(commond,temp);
                 }
                 if (temp!=null){
                     iv_test.setImageBitmap(temp);
