@@ -2,6 +2,8 @@ package com.asdf.utils;
 
 import android.graphics.Bitmap;
 
+import com.asdf.list.CommandConstants;
+
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -210,5 +212,35 @@ public class ImageProcessHelper {
         Utils.matToBitmap(dst,bitmap);
         src.release();
         dst.release();
+        kernel.release();
+    }
+
+    //自定义算子应用
+    public static void customFilter(String commond,Bitmap bitmap){
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        Mat kernel=getCustomFilter(commond);
+        Imgproc.filter2D(src,dst,-1,kernel,new Point(-1,-1),0.0,Imgproc.BORDER_DEFAULT);
+        Utils.matToBitmap(dst,bitmap);
+        src.release();
+        dst.release();
+        kernel.release();
+    }
+
+    private static Mat getCustomFilter(String commond) {
+        Mat kernel=new Mat(3,3,CvType.CV_32FC1);
+        if (commond.equals(CommandConstants.CUSTOM_BLUR_COMMAND)){
+            //前两个参数：开始的中心点,现在是设置为从(0,0)开始,后面的参数为算子设置,前面设置是多少这里就输入多少个参数
+            //例如现在的参数是3*3=9,输入9个参数
+            kernel.put(0,0,1.0/9.0,1.0/9.0,1.0/9.0,1.0/9.0,1.0/9.0,1.0/9.0,1.0/9.0,1.0/9.0,1.0/9.0);
+        }else if (commond.equals(CommandConstants.CUSTOM_EDGE_COMMAND)){
+            //拉普拉斯边缘
+            kernel.put(0,0,-1,-1,-1,-1,8,-1,-1,-1,-1);
+        }else if (commond.equals(CommandConstants.CUSTOM_SHARPEN_COMMAND)){
+            //拉普拉斯锐化
+            kernel.put(0,0,-1,-1,-1,-1,9,-1,-1,-1,-1);
+        }
+        return kernel;
     }
 }

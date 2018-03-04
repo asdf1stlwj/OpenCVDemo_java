@@ -87,6 +87,10 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
                     ImageProcessHelper.gaussianBlur(temp);
                 }else if (commond.equals(CommandConstants.BI_BLUR_COMMAND)){
                     ImageProcessHelper.biBlur(temp);
+                }else if (commond.equals(CommandConstants.CUSTOM_BLUR_COMMAND)||
+                          commond.equals(CommandConstants.CUSTOM_EDGE_COMMAND)||
+                          commond.equals(CommandConstants.CUSTOM_SHARPEN_COMMAND)){
+                    ImageProcessHelper.customFilter(commond,temp);
                 }
                 if (temp!=null){
                     iv_test.setImageBitmap(temp);

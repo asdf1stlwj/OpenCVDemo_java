@@ -48,6 +48,9 @@ public class MainActivity extends Activity {
         myAdapter.getModel().add(new CommonData(CommandConstants.BLUR_IMAGE_COMMAND,9));
         myAdapter.getModel().add(new CommonData(CommandConstants.GUASSION_BLUR_COMMAND,10));
         myAdapter.getModel().add(new CommonData(CommandConstants.BI_BLUR_COMMAND,11));
+        myAdapter.getModel().add(new CommonData(CommandConstants.CUSTOM_BLUR_COMMAND,12));
+        myAdapter.getModel().add(new CommonData(CommandConstants.CUSTOM_EDGE_COMMAND,13));
+        myAdapter.getModel().add(new CommonData(CommandConstants.CUSTOM_SHARPEN_COMMAND,14));
         myAdapter.notifyDataSetChanged();
 
     }

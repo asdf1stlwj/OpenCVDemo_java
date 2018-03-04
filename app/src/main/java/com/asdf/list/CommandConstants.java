@@ -16,4 +16,8 @@ public class CommandConstants {
     public static final String BLUR_IMAGE_COMMAND ="均值模糊";
     public static final String GUASSION_BLUR_COMMAND ="高斯模糊";
     public static final String BI_BLUR_COMMAND ="双边模糊";
+    public static final String CUSTOM_BLUR_COMMAND ="自定义算子-模糊";
+    public static final String CUSTOM_EDGE_COMMAND ="自定义算子-边缘";
+    public static final String CUSTOM_SHARPEN_COMMAND ="自定义算子-锐化";
+
 }
