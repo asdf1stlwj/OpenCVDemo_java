@@ -21,4 +21,7 @@ public class CommandConstants {
     public static final String CUSTOM_SHARPEN_COMMAND ="自定义算子-锐化";
     public static final String ERODE_COMMAND ="腐蚀-最小化滤波";
     public static final String DILATE_COMMAND ="膨胀-最大化滤波";
+    public static final String OPEN_COMMAND ="开操作";
+    public static final String CLOSE_COMMAND ="闭操作";
+    public static final String MORPH_LINE_COMMAND ="形态学直线检测";
 }

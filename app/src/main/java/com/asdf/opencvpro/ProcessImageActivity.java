@@ -94,6 +94,11 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
                 }else if (commond.equals(CommandConstants.ERODE_COMMAND)||
                         commond.equals(CommandConstants.DILATE_COMMAND)){
                     ImageProcessHelper.erodeOrDilate(commond,temp);
+                }else if (commond.equals(CommandConstants.OPEN_COMMAND)||
+                        commond.equals(CommandConstants.CLOSE_COMMAND)){
+                    ImageProcessHelper.openOrClose(commond,temp);
+                }else if (commond.equals(CommandConstants.MORPH_LINE_COMMAND)){
+                    ImageProcessHelper.morphLineDetection(temp);
                 }
                 if (temp!=null){
                     iv_test.setImageBitmap(temp);

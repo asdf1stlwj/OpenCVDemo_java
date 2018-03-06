@@ -53,6 +53,9 @@ public class MainActivity extends Activity {
         myAdapter.getModel().add(new CommonData(CommandConstants.CUSTOM_SHARPEN_COMMAND,14));
         myAdapter.getModel().add(new CommonData(CommandConstants.ERODE_COMMAND,15));
         myAdapter.getModel().add(new CommonData(CommandConstants.DILATE_COMMAND,16));
+        myAdapter.getModel().add(new CommonData(CommandConstants.OPEN_COMMAND,17));
+        myAdapter.getModel().add(new CommonData(CommandConstants.CLOSE_COMMAND,18));
+        myAdapter.getModel().add(new CommonData(CommandConstants.MORPH_LINE_COMMAND,19));
         myAdapter.notifyDataSetChanged();
 
     }

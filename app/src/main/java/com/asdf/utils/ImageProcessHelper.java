@@ -261,4 +261,40 @@ public class ImageProcessHelper {
         dst.release();
         structElement.release();
     }
+
+    //开闭操作
+    //开操作:先腐蚀后膨胀
+    //闭操作:先膨胀后腐蚀
+    public static void openOrClose(String commond,Bitmap bitmap){
+        boolean open=commond.equals(CommandConstants.OPEN_COMMAND);
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        Imgproc.cvtColor(src,src,Imgproc.COLOR_BGRA2GRAY);
+        Imgproc.threshold(src,src,0,255,Imgproc.THRESH_BINARY_INV |Imgproc.THRESH_OTSU);
+        Mat structElement=Imgproc.getStructuringElement(Imgproc.CV_SHAPE_RECT,new Size(3,3),new Point(-1,-1));
+        if (open){
+            Imgproc.morphologyEx(src,dst,Imgproc.MORPH_OPEN,structElement);
+        }else {
+            Imgproc.morphologyEx(src,dst,Imgproc.MORPH_CLOSE,structElement);
+        }
+        Utils.matToBitmap(dst,bitmap);
+        src.release();
+        dst.release();
+        structElement.release();
+    }
+
+    public static void morphLineDetection(Bitmap bitmap){
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        Imgproc.cvtColor(src,src,Imgproc.COLOR_BGRA2GRAY);
+        Imgproc.threshold(src,src,0,255,Imgproc.THRESH_BINARY_INV |Imgproc.THRESH_OTSU);
+        Mat structElement=Imgproc.getStructuringElement(Imgproc.MORPH_RECT,new Size(30,1),new Point(-1,-1));
+        Imgproc.morphologyEx(src,dst,Imgproc.MORPH_OPEN,structElement);
+        Utils.matToBitmap(dst,bitmap);
+        src.release();
+        dst.release();
+        structElement.release();
+    }
 }
