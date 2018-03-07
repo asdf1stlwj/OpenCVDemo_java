@@ -56,6 +56,9 @@ public class MainActivity extends Activity {
         myAdapter.getModel().add(new CommonData(CommandConstants.OPEN_COMMAND,17));
         myAdapter.getModel().add(new CommonData(CommandConstants.CLOSE_COMMAND,18));
         myAdapter.getModel().add(new CommonData(CommandConstants.MORPH_LINE_COMMAND,19));
+        myAdapter.getModel().add(new CommonData(CommandConstants.THRESHOLD_BINARY_COMMAND,20));
+        myAdapter.getModel().add(new CommonData(CommandConstants.THRESHOLD_BINARY_INV_COMMAND,21));
+        myAdapter.getModel().add(new CommonData(CommandConstants.THRESHOLD_TRUNCAT_COMMAND,22));
         myAdapter.notifyDataSetChanged();
 
     }

@@ -24,4 +24,7 @@ public class CommandConstants {
     public static final String OPEN_COMMAND ="开操作";
     public static final String CLOSE_COMMAND ="闭操作";
     public static final String MORPH_LINE_COMMAND ="形态学直线检测";
+    public static final String THRESHOLD_BINARY_COMMAND ="阈值二值化";
+    public static final String THRESHOLD_BINARY_INV_COMMAND ="阈值反二值化";
+    public static final String THRESHOLD_TRUNCAT_COMMAND ="阈值截断";
 }
