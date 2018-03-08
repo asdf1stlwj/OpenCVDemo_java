@@ -27,4 +27,6 @@ public class CommandConstants {
     public static final String THRESHOLD_BINARY_COMMAND ="阈值二值化";
     public static final String THRESHOLD_BINARY_INV_COMMAND ="阈值反二值化";
     public static final String THRESHOLD_TRUNCAT_COMMAND ="阈值截断";
+    public static final String THRESHOLD_TOZERO_COMMAND ="阈值取零";
+    public static final String THRESHOLD_TOZERO_INV_COMMAND ="阈值取零-反";
 }

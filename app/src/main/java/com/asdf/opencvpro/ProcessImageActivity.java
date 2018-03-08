@@ -101,7 +101,9 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
                     ImageProcessHelper.morphLineDetection(temp);
                 }else if (commond.equals(CommandConstants.THRESHOLD_BINARY_COMMAND)||
                           commond.equals(CommandConstants.THRESHOLD_BINARY_INV_COMMAND)||
-                          commond.equals(CommandConstants.THRESHOLD_TRUNCAT_COMMAND)){
+                          commond.equals(CommandConstants.THRESHOLD_TRUNCAT_COMMAND)||
+                          commond.equals(CommandConstants.THRESHOLD_TOZERO_COMMAND)||
+                          commond.equals(CommandConstants.THRESHOLD_TOZERO_INV_COMMAND)){
                     ImageProcessHelper.thresholdImg(commond,temp);
                 }
                 if (temp!=null){

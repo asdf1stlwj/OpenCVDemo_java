@@ -59,6 +59,8 @@ public class MainActivity extends Activity {
         myAdapter.getModel().add(new CommonData(CommandConstants.THRESHOLD_BINARY_COMMAND,20));
         myAdapter.getModel().add(new CommonData(CommandConstants.THRESHOLD_BINARY_INV_COMMAND,21));
         myAdapter.getModel().add(new CommonData(CommandConstants.THRESHOLD_TRUNCAT_COMMAND,22));
+        myAdapter.getModel().add(new CommonData(CommandConstants.THRESHOLD_TOZERO_COMMAND,23));
+        myAdapter.getModel().add(new CommonData(CommandConstants.THRESHOLD_TOZERO_INV_COMMAND,24));
         myAdapter.notifyDataSetChanged();
 
     }

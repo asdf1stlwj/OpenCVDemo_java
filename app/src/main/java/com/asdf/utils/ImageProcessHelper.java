@@ -321,6 +321,10 @@ public class ImageProcessHelper {
             return Imgproc.THRESH_BINARY_INV |Imgproc.THRESH_OTSU;
         }else if (command.equals(CommandConstants.THRESHOLD_TRUNCAT_COMMAND)){
             return Imgproc.THRESH_TRUNC|Imgproc.THRESH_OTSU;
+        }else if (command.equals(CommandConstants.THRESHOLD_TOZERO_COMMAND)){
+            return Imgproc.THRESH_TOZERO|Imgproc.THRESH_OTSU;
+        }else if (command.equals(CommandConstants.THRESHOLD_TOZERO_INV_COMMAND)){
+            return Imgproc.THRESH_TOZERO_INV|Imgproc.THRESH_OTSU;
         }else {
             return Imgproc.THRESH_BINARY |Imgproc.THRESH_OTSU;
         }
