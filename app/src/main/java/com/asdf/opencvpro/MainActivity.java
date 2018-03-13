@@ -37,30 +37,7 @@ public class MainActivity extends Activity {
         });
         myAdapter=new MyListViewAdapter(this);
         lv_items.setAdapter(myAdapter);
-        myAdapter.getModel().add(new CommonData(CommandConstants.TEST_ENV_COMMAND,1));
-        myAdapter.getModel().add(new CommonData(CommandConstants.MAT_PIXEL_INVERT_COMMAND,2));
-        myAdapter.getModel().add(new CommonData(CommandConstants.BITMAP_PIXEL_INVERT_COMMAND,3));
-        myAdapter.getModel().add(new CommonData(CommandConstants.BITMAP_PIXEL_SUBSTRACT_COMMAND,4));
-        myAdapter.getModel().add(new CommonData(CommandConstants.BITMAP_PIXEL_ADD_COMMAND,5));
-        myAdapter.getModel().add(new CommonData(CommandConstants.ADJUST_CONTRAST_COMMAND,6));
-        myAdapter.getModel().add(new CommonData(CommandConstants.IMAGE_COIAINER_COMMAND,7));
-        myAdapter.getModel().add(new CommonData(CommandConstants.SUB_IMAGE_COMMAND,8));
-        myAdapter.getModel().add(new CommonData(CommandConstants.BLUR_IMAGE_COMMAND,9));
-        myAdapter.getModel().add(new CommonData(CommandConstants.GUASSION_BLUR_COMMAND,10));
-        myAdapter.getModel().add(new CommonData(CommandConstants.BI_BLUR_COMMAND,11));
-        myAdapter.getModel().add(new CommonData(CommandConstants.CUSTOM_BLUR_COMMAND,12));
-        myAdapter.getModel().add(new CommonData(CommandConstants.CUSTOM_EDGE_COMMAND,13));
-        myAdapter.getModel().add(new CommonData(CommandConstants.CUSTOM_SHARPEN_COMMAND,14));
-        myAdapter.getModel().add(new CommonData(CommandConstants.ERODE_COMMAND,15));
-        myAdapter.getModel().add(new CommonData(CommandConstants.DILATE_COMMAND,16));
-        myAdapter.getModel().add(new CommonData(CommandConstants.OPEN_COMMAND,17));
-        myAdapter.getModel().add(new CommonData(CommandConstants.CLOSE_COMMAND,18));
-        myAdapter.getModel().add(new CommonData(CommandConstants.MORPH_LINE_COMMAND,19));
-        myAdapter.getModel().add(new CommonData(CommandConstants.THRESHOLD_BINARY_COMMAND,20));
-        myAdapter.getModel().add(new CommonData(CommandConstants.THRESHOLD_BINARY_INV_COMMAND,21));
-        myAdapter.getModel().add(new CommonData(CommandConstants.THRESHOLD_TRUNCAT_COMMAND,22));
-        myAdapter.getModel().add(new CommonData(CommandConstants.THRESHOLD_TOZERO_COMMAND,23));
-        myAdapter.getModel().add(new CommonData(CommandConstants.THRESHOLD_TOZERO_INV_COMMAND,24));
+        myAdapter.getModel().addAll(CommonData.getCommonList());
         myAdapter.notifyDataSetChanged();
 
     }
@@ -72,9 +49,18 @@ public class MainActivity extends Activity {
 //    }
 
     private void processCommand() {
-        Intent intent=new Intent(this,ProcessImageActivity.class);
-        intent.putExtra("command",command);
-        startActivity(intent);
+        if (command.equals(CommandConstants.THRESHOLD_BINARY_COMMAND)||
+                command.equals(CommandConstants.ADAPTIVE_THRESHOLD_COMMAND)||
+                command.equals(CommandConstants.ADAPTIVE_GAUSSIAN_COMMAND)){
+            Intent intent=new Intent(this,ThresholdProcessActivity.class);
+            intent.putExtra("command",command);
+            startActivity(intent);
+        }else {
+            Intent intent=new Intent(this,ProcessImageActivity.class);
+            intent.putExtra("command",command);
+            startActivity(intent);
+        }
+
     }
 }
 

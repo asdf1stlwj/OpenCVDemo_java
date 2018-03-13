@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.asdf.list.CommandConstants;
@@ -21,21 +23,26 @@ import org.opencv.android.OpenCVLoader;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class ProcessImageActivity extends Activity implements View.OnClickListener{
+public class ThresholdProcessActivity extends Activity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     private String TAG="CVSAMPLE";
     private final int REQUEST_GET_IMAGE=1;
     private final int MAX_SIZE=1024;
     Button btn_process,btn_sel;
     ImageView iv_test;
+    TextView tv_progress;
+    SeekBar seekBar;
     Bitmap selectedBitmap;
     String commond;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_process_image);
+        setContentView(R.layout.activity_threshold_process);
         commond=getIntent().getStringExtra("command");
         btn_process = (Button) findViewById(R.id.btn_process);
         btn_sel= (Button) findViewById(R.id.btn_sel);
+        seekBar= (SeekBar) findViewById(R.id.seekbar);
+        tv_progress= (TextView) findViewById(R.id.tv_seekbarProgress);
+        seekBar.setOnSeekBarChangeListener(this);
         btn_process.setTag("PROCESS");
         btn_process.setText(commond);
         btn_sel.setTag("SELECT");
@@ -47,7 +54,7 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
     }
 
     private void initOpenCVLib() {
-        boolean result=OpenCVLoader.initDebug();
+        boolean result= OpenCVLoader.initDebug();
         if (result==true){
             Log.i(TAG, "initOpenCVLib success");
         }else {
@@ -57,7 +64,7 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-       Object obj=view.getTag();
+        Object obj=view.getTag();
         if (obj instanceof String){
             if (obj.equals("SELECT")){
                 selectImage();
@@ -66,51 +73,18 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
                     Toast.makeText(this,"请选择一张图片",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Bitmap temp=selectedBitmap.copy(selectedBitmap.getConfig(),true);
-                if (commond.equals(CommandConstants.TEST_ENV_COMMAND)){
-                    temp= ImageProcessHelper.convertToGray(temp);
-                }else if (commond.equals(CommandConstants.MAT_PIXEL_INVERT_COMMAND)){
-                    temp=ImageProcessHelper.invert(temp);
-                }else if (commond.equals(CommandConstants.BITMAP_PIXEL_INVERT_COMMAND)){
-                    ImageProcessHelper.localInvert(temp);
-                }else if(commond.equals(CommandConstants.BITMAP_PIXEL_SUBSTRACT_COMMAND)){
-                    ImageProcessHelper.substract(temp);
-                }else if (commond.equals(CommandConstants.BITMAP_PIXEL_ADD_COMMAND)){
-                    ImageProcessHelper.add(temp);
-                }else if (commond.equals(CommandConstants.ADJUST_CONTRAST_COMMAND)){
-                    ImageProcessHelper.adjustConstant(temp);
-                }else if (commond.equals(CommandConstants.IMAGE_COIAINER_COMMAND)){
-                    temp=ImageProcessHelper.demoMatUsage();
-                }else if (commond.equals(CommandConstants.SUB_IMAGE_COMMAND)){
-                    temp=ImageProcessHelper.getROIArea(temp);
-                }else if (commond.equals(CommandConstants.BLUR_IMAGE_COMMAND)){
-                    ImageProcessHelper.meanBlur(temp);
-                }else if (commond.equals(CommandConstants.GUASSION_BLUR_COMMAND)){
-                    ImageProcessHelper.gaussianBlur(temp);
-                }else if (commond.equals(CommandConstants.BI_BLUR_COMMAND)){
-                    ImageProcessHelper.biBlur(temp);
-                }else if (commond.equals(CommandConstants.CUSTOM_BLUR_COMMAND)||
-                          commond.equals(CommandConstants.CUSTOM_EDGE_COMMAND)||
-                          commond.equals(CommandConstants.CUSTOM_SHARPEN_COMMAND)){
-                    ImageProcessHelper.customFilter(commond,temp);
-                }else if (commond.equals(CommandConstants.ERODE_COMMAND)||
-                        commond.equals(CommandConstants.DILATE_COMMAND)){
-                    ImageProcessHelper.erodeOrDilate(commond,temp);
-                }else if (commond.equals(CommandConstants.OPEN_COMMAND)||
-                        commond.equals(CommandConstants.CLOSE_COMMAND)){
-                    ImageProcessHelper.openOrClose(commond,temp);
-                }else if (commond.equals(CommandConstants.MORPH_LINE_COMMAND)){
-                    ImageProcessHelper.morphLineDetection(temp);
-                }else if (commond.equals(CommandConstants.THRESHOLD_BINARY_COMMAND)||
-                          commond.equals(CommandConstants.THRESHOLD_BINARY_INV_COMMAND)||
-                          commond.equals(CommandConstants.THRESHOLD_TRUNCAT_COMMAND)||
-                          commond.equals(CommandConstants.THRESHOLD_TOZERO_COMMAND)||
-                          commond.equals(CommandConstants.THRESHOLD_TOZERO_INV_COMMAND)){
-                    ImageProcessHelper.thresholdImg(commond,temp);
-                }
-                if (temp!=null){
-                    iv_test.setImageBitmap(temp);
-                }
+                processcommand(51);
+//                Bitmap temp=selectedBitmap.copy(selectedBitmap.getConfig(),true);
+//                if (commond.equals(CommandConstants.THRESHOLD_BINARY_COMMAND)){
+//                    ImageProcessHelper.thresholdImg(commond,temp);
+//                }else if(commond.equals(CommandConstants.ADAPTIVE_THRESHOLD_COMMAND)){
+//                    ImageProcessHelper.adaptiveThresholdImg(51,false,temp);
+//                }else if (commond.equals(CommandConstants.ADAPTIVE_GAUSSIAN_COMMAND)){
+//                    ImageProcessHelper.adaptiveThresholdImg(51,true,temp);
+//                }
+//                if (temp!=null){
+//                    iv_test.setImageBitmap(temp);
+//                }
             }
         }
     }
@@ -122,15 +96,23 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
         startActivityForResult(Intent.createChooser(intent,"Brower Image..."),REQUEST_GET_IMAGE);
     }
 
-//    private void commond_togray(){
-//        Mat src=new Mat();
-//        Mat dst=new Mat();
-//        Bitmap temp=selectedBitmap.copy(selectedBitmap.getConfig(),true);
-//        Utils.bitmapToMat(temp,src);
-//        Imgproc.cvtColor(src,dst,Imgproc.COLOR_BGRA2GRAY);
-//        Utils.matToBitmap(dst,temp);
-//        iv_test.setImageBitmap(temp);
-//    }
+    private void processcommand(int progress){
+        if (progress%2==0){
+            progress++;
+        }
+        Bitmap temp=selectedBitmap.copy(selectedBitmap.getConfig(),true);
+        if (commond.equals(CommandConstants.THRESHOLD_BINARY_COMMAND)){
+            ImageProcessHelper.manulThresholdImg(progress,temp);
+        }else if(commond.equals(CommandConstants.ADAPTIVE_THRESHOLD_COMMAND)){
+            ImageProcessHelper.adaptiveThresholdImg(progress,false,temp);
+        }else if (commond.equals(CommandConstants.ADAPTIVE_GAUSSIAN_COMMAND)){
+            ImageProcessHelper.adaptiveThresholdImg(progress,true,temp);
+        }
+        tv_progress.setText("当前阈值:"+progress);
+        if (temp!=null){
+            iv_test.setImageBitmap(temp);
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -163,5 +145,20 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
                 Log.e(TAG, e.getMessage() );
             }
         }
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+         processcommand(i);
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
 }

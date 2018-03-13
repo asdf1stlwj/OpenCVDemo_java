@@ -4,7 +4,7 @@ package com.asdf.list;
  * Created by hasee on 2018/2/6.
  */
 
-public class CommandConstants {
+public interface CommandConstants {
     public static final String TEST_ENV_COMMAND="环境测试-灰度";
     public static final String MAT_PIXEL_INVERT_COMMAND ="Mat像素操作-取反";
     public static final String BITMAP_PIXEL_INVERT_COMMAND ="Bitmap像素操作-取反";
@@ -29,4 +29,6 @@ public class CommandConstants {
     public static final String THRESHOLD_TRUNCAT_COMMAND ="阈值截断";
     public static final String THRESHOLD_TOZERO_COMMAND ="阈值取零";
     public static final String THRESHOLD_TOZERO_INV_COMMAND ="阈值取零-反";
+    public static final String ADAPTIVE_THRESHOLD_COMMAND ="自适应阈值-均值";
+    public static final String ADAPTIVE_GAUSSIAN_COMMAND ="自适应阈值-高斯";
 }

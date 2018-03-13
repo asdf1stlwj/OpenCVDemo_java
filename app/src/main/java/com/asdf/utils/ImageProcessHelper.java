@@ -300,6 +300,20 @@ public class ImageProcessHelper {
         structElement.release();
     }
 
+    public static void manulThresholdImg(int progress,Bitmap bitmap){
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        //注意先把图像转为灰度图像,才再把灰度图像转为二值化图像(其实就是只有黑白：0和255)
+        Imgproc.cvtColor(src,src,Imgproc.COLOR_BGRA2GRAY);
+        //Imgproc.THRESH_OTSU:代表根据opencv自带算法求出阈值（下面第三个参数）
+        //第四个参数:代表最大值
+        Imgproc.threshold(src,dst,progress,255,Imgproc.THRESH_BINARY);
+        Utils.matToBitmap(dst,bitmap);
+        src.release();
+        dst.release();
+    }
+
     public static void thresholdImg(String command,Bitmap bitmap){
         Mat src=new Mat();
         Mat dst=new Mat();
@@ -328,5 +342,26 @@ public class ImageProcessHelper {
         }else {
             return Imgproc.THRESH_BINARY |Imgproc.THRESH_OTSU;
         }
+    }
+
+    /**
+     * 自适应阈值,当一张图片受光照区域不均全局阈值往往失,此时就应该用自适应阈值
+     * @param progress 块越大区分度越高
+     * @param isGaosi 均值或高斯
+     * @param bitmap
+     */
+    public static void adaptiveThresholdImg(int progress,boolean isGaosi,Bitmap bitmap){
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        //注意先把图像转为灰度图像,才再把灰度图像转为二值化图像(其实就是只有黑白：0和255)
+        Imgproc.cvtColor(src,src,Imgproc.COLOR_BGRA2GRAY);
+        //Imgproc.THRESH_OTSU:代表根据opencv自带算法求出阈值（下面第三个参数）
+        //第四个参数:代表最大值
+        Imgproc.adaptiveThreshold(src,dst,255,isGaosi?Imgproc.ADAPTIVE_THRESH_MEAN_C:Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C,
+                     Imgproc.THRESH_BINARY,progress,0.0);
+        Utils.matToBitmap(dst,bitmap);
+        src.release();
+        dst.release();
     }
 }

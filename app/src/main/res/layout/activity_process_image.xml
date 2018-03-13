@@ -35,5 +35,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/ll_btn"
         android:layout_marginTop="10dp"
+        android:src="@drawable/text"
         />
 </LinearLayout>
