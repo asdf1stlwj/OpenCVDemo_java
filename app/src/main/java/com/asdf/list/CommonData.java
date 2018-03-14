@@ -69,6 +69,10 @@ public class CommonData implements CommandConstants{
         commonDatas.add(new CommonData(THRESHOLD_TOZERO_INV_COMMAND,24));
         commonDatas.add(new CommonData(ADAPTIVE_THRESHOLD_COMMAND,25));
         commonDatas.add(new CommonData(ADAPTIVE_GAUSSIAN_COMMAND,26));
+        commonDatas.add(new CommonData(HISTOGRAM_EQ_COMMAND,27));
+        commonDatas.add(new CommonData(GRADIENT_SOBEL_X_COMMAND,28));
+        commonDatas.add(new CommonData(GRADIENT_SOBEL_Y_COMMAND,29));
+        commonDatas.add(new CommonData(GRADIENT_IMG_COMMAND,30));
         return commonDatas;
     }
 }

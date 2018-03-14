@@ -107,6 +107,12 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
                           commond.equals(CommandConstants.THRESHOLD_TOZERO_COMMAND)||
                           commond.equals(CommandConstants.THRESHOLD_TOZERO_INV_COMMAND)){
                     ImageProcessHelper.thresholdImg(commond,temp);
+                }else if (commond.equals(CommandConstants.HISTOGRAM_EQ_COMMAND)){
+                    ImageProcessHelper.histogramEq(temp);
+                }else if (commond.equals(CommandConstants.GRADIENT_SOBEL_X_COMMAND)){
+                    ImageProcessHelper.sobleGradient(temp,1);
+                }else if (commond.equals(CommandConstants.GRADIENT_SOBEL_Y_COMMAND)){
+                    ImageProcessHelper.sobleGradient(temp,2);
                 }
                 if (temp!=null){
                     iv_test.setImageBitmap(temp);

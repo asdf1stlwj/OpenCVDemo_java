@@ -364,4 +364,40 @@ public class ImageProcessHelper {
         src.release();
         dst.release();
     }
+
+    /**
+     * 直方图均衡化:把图像每个像素点的数值出现次数进行统计,得到像素的直方图,再把多的像素拉伸,就是直方图均衡化
+     * @param bitmap
+     */
+    public static void histogramEq(Bitmap bitmap){
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        //注意先把图像转为灰度图像,才进行直方图均衡化(其实就是只有黑白：0和255)
+        Imgproc.cvtColor(src,src,Imgproc.COLOR_BGRA2GRAY);
+        Imgproc.equalizeHist(src,dst);
+        Utils.matToBitmap(dst,bitmap);
+        src.release();
+        dst.release();
+    }
+
+    /**
+     *
+     * @param bitmap
+     * @param type 1:x方向的梯度化  2:y方向的   3:x,y方向的
+     */
+    public static void sobleGradient(Bitmap bitmap,int type){
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        if (type==1){
+            Imgproc.Sobel(src,dst,-1,1,0);
+        }else if (type==2){
+            Imgproc.Sobel(src,dst,-1,0,1);
+        }
+        Core.convertScaleAbs(dst,dst);
+        Utils.matToBitmap(dst,bitmap);
+        src.release();
+        dst.release();
+    }
 }

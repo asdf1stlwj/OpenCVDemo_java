@@ -31,4 +31,8 @@ public interface CommandConstants {
     public static final String THRESHOLD_TOZERO_INV_COMMAND ="阈值取零-反";
     public static final String ADAPTIVE_THRESHOLD_COMMAND ="自适应阈值-均值";
     public static final String ADAPTIVE_GAUSSIAN_COMMAND ="自适应阈值-高斯";
+    public static final String HISTOGRAM_EQ_COMMAND ="直方图均衡化";
+    public static final String GRADIENT_SOBEL_X_COMMAND ="图像梯度化-x方向";
+    public static final String GRADIENT_SOBEL_Y_COMMAND ="图像梯度化-y方向";
+    public static final String GRADIENT_IMG_COMMAND ="图像梯度化";
 }
