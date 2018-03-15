@@ -388,16 +388,31 @@ public class ImageProcessHelper {
      */
     public static void sobleGradient(Bitmap bitmap,int type){
         Mat src=new Mat();
-        Mat dst=new Mat();
+        Mat xgard=new Mat();
+        Mat ygard=new Mat();
         Utils.bitmapToMat(bitmap,src);
         if (type==1){
-            Imgproc.Sobel(src,dst,-1,1,0);
+            Imgproc.Sobel(src,xgard,CvType.CV_16S,1,0);
+            Core.convertScaleAbs(xgard,xgard);
+            Utils.matToBitmap(xgard,bitmap);
         }else if (type==2){
-            Imgproc.Sobel(src,dst,-1,0,1);
+            Imgproc.Sobel(src,ygard,CvType.CV_16S,0,1);
+            Core.convertScaleAbs(ygard,ygard);
+            Utils.matToBitmap(ygard,bitmap);
+        }else if (type==3){
+            Mat dst=new Mat();
+            //注意这里的CvType.CV_16S是为了增强位图深度,防止部分像素超出255而发生截断
+            //Imgproc.Scharr();该函数与Sobel一样,不过Scharr的算子梯度差更强,因此提取边缘效果更好
+            Imgproc.Sobel(src,xgard,CvType.CV_16S,1,0);
+            Imgproc.Sobel(src,ygard,CvType.CV_16S,0,1);
+            Core.convertScaleAbs(xgard,xgard);
+            Core.convertScaleAbs(ygard,ygard);
+            Core.addWeighted(xgard,0.5,ygard,0.5,30,dst);
+            Utils.matToBitmap(dst,bitmap);
+            dst.release();
         }
-        Core.convertScaleAbs(dst,dst);
-        Utils.matToBitmap(dst,bitmap);
         src.release();
-        dst.release();
+        xgard.release();
+        ygard.release();
     }
 }

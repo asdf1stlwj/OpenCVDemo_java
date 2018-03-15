@@ -113,6 +113,8 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
                     ImageProcessHelper.sobleGradient(temp,1);
                 }else if (commond.equals(CommandConstants.GRADIENT_SOBEL_Y_COMMAND)){
                     ImageProcessHelper.sobleGradient(temp,2);
+                }else if (commond.equals(CommandConstants.GRADIENT_IMG_COMMAND)){
+                    ImageProcessHelper.sobleGradient(temp,3);
                 }
                 if (temp!=null){
                     iv_test.setImageBitmap(temp);
