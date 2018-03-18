@@ -51,7 +51,8 @@ public class MainActivity extends Activity {
     private void processCommand() {
         if (command.equals(CommandConstants.THRESHOLD_BINARY_COMMAND)||
                 command.equals(CommandConstants.ADAPTIVE_THRESHOLD_COMMAND)||
-                command.equals(CommandConstants.ADAPTIVE_GAUSSIAN_COMMAND)){
+                command.equals(CommandConstants.ADAPTIVE_GAUSSIAN_COMMAND)||
+                command.equals(CommandConstants.CANNY_EDGE_COMMAND)){
             Intent intent=new Intent(this,ThresholdProcessActivity.class);
             intent.putExtra("command",command);
             startActivity(intent);

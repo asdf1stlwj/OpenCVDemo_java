@@ -415,4 +415,17 @@ public class ImageProcessHelper {
         xgard.release();
         ygard.release();
     }
+
+    public static void cannyEdge(int t,Bitmap bitmap){
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        //高斯模糊不是必须,但是用了效果更好(模糊后更好提取边缘了)
+        Imgproc.GaussianBlur(src,src,new Size(3,3),0,0,Imgproc.BORDER_DEFAULT);
+        Imgproc.cvtColor(src,src,Imgproc.COLOR_BGRA2GRAY);//必须,因为Canny必须要单通道图片(灰度图像)
+        Imgproc.Canny(src,dst,t,t*2,3,false);
+        Utils.matToBitmap(dst,bitmap);
+        src.release();
+        dst.release();
+    }
 }

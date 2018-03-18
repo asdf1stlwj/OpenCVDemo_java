@@ -34,5 +34,7 @@ public interface CommandConstants {
     public static final String HISTOGRAM_EQ_COMMAND ="直方图均衡化";
     public static final String GRADIENT_SOBEL_X_COMMAND ="图像梯度化-x方向";
     public static final String GRADIENT_SOBEL_Y_COMMAND ="图像梯度化-y方向";
-    public static final String GRADIENT_IMG_COMMAND ="图像梯度化";
+    public static final String GRADIENT_IMG_COMMAND ="图像梯度化-xy方向";
+    public static final String CANNY_EDGE_COMMAND ="Canny边缘提取";
+
 }
