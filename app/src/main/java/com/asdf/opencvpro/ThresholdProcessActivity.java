@@ -109,6 +109,8 @@ public class ThresholdProcessActivity extends Activity implements View.OnClickLi
             ImageProcessHelper.adaptiveThresholdImg(progress,true,temp);
         }else if (commond.equals(CommandConstants.CANNY_EDGE_COMMAND)){
             ImageProcessHelper.cannyEdge(progress,temp);
+        }else if (commond.equals(CommandConstants.HOUGH_LINE_COMMAND)){
+            ImageProcessHelper.houghLine(progress,temp);
         }
         tv_progress.setText("当前阈值:"+progress);
         if (temp!=null){

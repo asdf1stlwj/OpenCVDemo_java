@@ -422,10 +422,41 @@ public class ImageProcessHelper {
         Utils.bitmapToMat(bitmap,src);
         //高斯模糊不是必须,但是用了效果更好(模糊后更好提取边缘了)
         Imgproc.GaussianBlur(src,src,new Size(3,3),0,0,Imgproc.BORDER_DEFAULT);
-        Imgproc.cvtColor(src,src,Imgproc.COLOR_BGRA2GRAY);//必须,因为Canny必须要单通道图片(灰度图像)
+        Imgproc.cvtColor(src,src,Imgproc.COLOR_BGRA2GRAY);
         Imgproc.Canny(src,dst,t,t*2,3,false);
         Utils.matToBitmap(dst,bitmap);
         src.release();
         dst.release();
+    }
+
+    /**
+     * 需要先做好边缘提取
+     * @param t
+     * @param bitmap
+     */
+    public static void houghLine(int t,Bitmap bitmap){
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Mat lines=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        //高斯模糊不是必须,但是用了效果更好(模糊后更好提取边缘了)
+        Imgproc.GaussianBlur(src,src,new Size(3,3),0,0,Imgproc.BORDER_DEFAULT);
+        //Imgproc.cvtColor(src,src,Imgproc.COLOR_BGRA2GRAY);//必须,因为Canny必须要单通道图片(灰度图像)
+        Imgproc.Canny(src,dst,t,t*2,3,false);
+        Mat drawImg=new Mat(src.size(),src.type());
+        //直接得到直线的方法
+        Imgproc.HoughLinesP(dst,lines,1,Math.PI/180,t,15,3);
+        double[] pts=new double[4];
+        for (int i=0;i<lines.cols();i++){
+            pts=lines.get(0,i);
+            Point p1=new Point(pts[0],pts[1]);
+            Point p2=new Point(pts[2],pts[3]);
+            Core.line(drawImg,p1,p2,new Scalar(255,0,0,0),2,8,0);
+        }
+        Utils.matToBitmap(drawImg,bitmap);
+        src.release();
+        dst.release();
+        lines.release();
+        drawImg.release();
     }
 }

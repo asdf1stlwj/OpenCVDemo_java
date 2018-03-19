@@ -74,6 +74,7 @@ public class CommonData implements CommandConstants{
         commonDatas.add(new CommonData(GRADIENT_SOBEL_Y_COMMAND,29));
         commonDatas.add(new CommonData(GRADIENT_IMG_COMMAND,30));
         commonDatas.add(new CommonData(CANNY_EDGE_COMMAND,31));
+        commonDatas.add(new CommonData(HOUGH_LINE_COMMAND,32));
         return commonDatas;
     }
 }
