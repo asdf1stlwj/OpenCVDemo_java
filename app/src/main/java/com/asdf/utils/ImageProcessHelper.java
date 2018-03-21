@@ -459,4 +459,32 @@ public class ImageProcessHelper {
         lines.release();
         drawImg.release();
     }
+
+    public static Bitmap houghCircle(int t,Bitmap bitmap){
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        Imgproc.cvtColor(src,src,Imgproc.COLOR_BGRA2GRAY);
+        /**
+         * 使用这个参数必须保证图像灰度化
+         * 参数5:算出圆心距离小于这个数视为同一个圆（防止同心圆情况出现）
+         * 参数6:高阈值,这里用了类似canny的边缘提取
+         * 参数7：低阈值
+         * 参数8,9:半径范围
+         */
+        Imgproc.HoughCircles(src,dst,Imgproc.CV_HOUGH_GRADIENT,1,5,t*2,50,40,80);
+        Imgproc.cvtColor(src,src,Imgproc.COLOR_GRAY2BGR);
+        double[] circleParams=new double[3];
+        for (int i=0;i<dst.cols();i++){
+            circleParams=dst.get(0,i);
+            Point cp=new Point(circleParams[0],circleParams[1]);
+            Core.circle(src,cp,(int)circleParams[2],new Scalar(255,0,0,0),2,8,0);
+        }
+        //这里保证matToBitmap不出错
+        Bitmap rs=Bitmap.createBitmap(src.cols(),src.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(src,rs);
+        src.release();
+        dst.release();
+        return rs;
+    }
 }
