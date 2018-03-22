@@ -76,6 +76,7 @@ public class CommonData implements CommandConstants{
         commonDatas.add(new CommonData(CANNY_EDGE_COMMAND,31));
         commonDatas.add(new CommonData(HOUGH_LINE_COMMAND,32));
         commonDatas.add(new CommonData(HOUGH_CIRCLE_COMMAND,33));
+        commonDatas.add(new CommonData(TEMPLATE_MATCH_COMMAND,34));
         return commonDatas;
     }
 }

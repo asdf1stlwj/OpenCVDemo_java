@@ -42,7 +42,11 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
         iv_test= (ImageView) findViewById(R.id.iv_test);
         btn_process.setOnClickListener(this);
         btn_sel.setOnClickListener(this);
+        if (commond.equals(CommandConstants.TEMPLATE_MATCH_COMMAND)){
+            iv_test.setImageResource(R.drawable.sample);
+        }
         selectedBitmap=((BitmapDrawable) (iv_test.getDrawable())).getBitmap();
+
         initOpenCVLib();
     }
 
@@ -115,6 +119,9 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
                     ImageProcessHelper.sobleGradient(temp,2);
                 }else if (commond.equals(CommandConstants.GRADIENT_IMG_COMMAND)){
                     ImageProcessHelper.sobleGradient(temp,3);
+                }else if (commond.equals(CommandConstants.TEMPLATE_MATCH_COMMAND)){
+                    Bitmap tlp=BitmapFactory.decodeResource(getResources(),R.drawable.templete);
+                    ImageProcessHelper.templateMatchDemo(tlp,temp);
                 }
                 if (temp!=null){
                     iv_test.setImageBitmap(temp);

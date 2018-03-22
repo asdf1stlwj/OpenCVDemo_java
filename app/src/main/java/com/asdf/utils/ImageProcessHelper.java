@@ -487,4 +487,24 @@ public class ImageProcessHelper {
         dst.release();
         return rs;
     }
+
+    public static void templateMatchDemo(Bitmap tlp,Bitmap bitmap){
+        Mat src=new Mat();
+        Mat tlpMat=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        Utils.bitmapToMat(tlp,tlpMat);
+        int width=bitmap.getWidth()-tlp.getWidth()+1;
+        int height=bitmap.getHeight()-tlp.getHeight()+1;
+        Mat result=new Mat(width,height,CvType.CV_32FC1);
+        Imgproc.matchTemplate(src,tlpMat,result,Imgproc.TM_CCORR_NORMED);
+        Core.normalize(result,result,0,1.0,Core.NORM_MINMAX,-1);
+        Core.MinMaxLocResult minMaxLocResult=Core.minMaxLoc(result);
+        Point pt=minMaxLocResult.maxLoc;
+        Core.rectangle(src,pt,new Point(pt.x+tlp.getWidth(),pt.y+tlp.getHeight()),
+                new Scalar(255,0,0,0),2,8,0);
+        Utils.matToBitmap(src,bitmap);
+        src.release();
+        tlpMat.release();
+        result.release();
+    }
 }

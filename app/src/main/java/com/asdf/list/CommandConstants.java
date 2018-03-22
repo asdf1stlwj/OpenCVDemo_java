@@ -38,5 +38,5 @@ public interface CommandConstants {
     public static final String CANNY_EDGE_COMMAND ="Canny边缘提取";
     public static final String HOUGH_LINE_COMMAND ="霍夫直线提取";
     public static final String HOUGH_CIRCLE_COMMAND ="霍夫圆提取";
-
+    public static final String TEMPLATE_MATCH_COMMAND ="模板匹配";
 }
