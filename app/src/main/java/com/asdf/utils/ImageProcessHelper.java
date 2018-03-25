@@ -8,11 +8,15 @@ import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hasee on 2018/2/8.
@@ -506,5 +510,25 @@ public class ImageProcessHelper {
         src.release();
         tlpMat.release();
         result.release();
+    }
+
+    public static void findAndDrawContours(int t,Bitmap bitmap){
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        Imgproc.cvtColor(src,src,Imgproc.COLOR_BGRA2GRAY);
+        Imgproc.Canny(src,dst,t,t*2,3,false);
+        Mat hierarchy=new Mat();
+        List<MatOfPoint> contours=new ArrayList<>();
+        Imgproc.findContours(dst,contours,hierarchy,Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE);
+        Imgproc.cvtColor(src,src,Imgproc.COLOR_GRAY2BGR);
+        for(int i=0;i<contours.size();i++){
+            MatOfPoint point=contours.get(i);
+            Imgproc.drawContours(src,contours,i,new Scalar(255,0,0),2,8,hierarchy,0,new Point(0,0));
+        }
+        Utils.matToBitmap(src,bitmap);
+        src.release();
+        dst.release();
+        hierarchy.release();
     }
 }
