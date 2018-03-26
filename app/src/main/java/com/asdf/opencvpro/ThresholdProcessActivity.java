@@ -115,6 +115,13 @@ public class ThresholdProcessActivity extends Activity implements View.OnClickLi
             temp=ImageProcessHelper.houghCircle(progress,temp);
         }else if (commond.equals(CommandConstants.FIND_CONTOURS_COMMAND)){
             ImageProcessHelper.findAndDrawContours(progress,temp);
+        }else if (commond.equals(CommandConstants.MEASURE_OBJECT_COMMAND)){
+            double[][] results=ImageProcessHelper.measureObjects(progress,temp);
+            for (int i=0;i<results.length;i++){
+                Log.i("Measure Data:","第:"+i+"个轮廓");
+                Log.i("Measure Data:","周长:"+results[i][0]);
+                Log.i("Measure Data:","面积:"+results[i][1]);
+            }
         }
         tv_progress.setText("当前阈值:"+progress);
         if (temp!=null){

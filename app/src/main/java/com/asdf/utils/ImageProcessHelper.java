@@ -9,11 +9,13 @@ import org.opencv.core.Core;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.imgproc.Moments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -530,5 +532,38 @@ public class ImageProcessHelper {
         src.release();
         dst.release();
         hierarchy.release();
+    }
+
+    //大体步骤：灰度化->边缘模糊->轮廓发现->对象测量
+    public static double[][] measureObjects(int t,Bitmap bitmap){
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        Imgproc.cvtColor(src,src,Imgproc.COLOR_BGRA2GRAY);
+        Imgproc.Canny(src,dst,t,t*2,3,false);
+        Mat hierarchy=new Mat();
+        List<MatOfPoint> contours=new ArrayList<>();
+        Imgproc.findContours(dst,contours,hierarchy,Imgproc.RETR_TREE,Imgproc.CHAIN_APPROX_SIMPLE);
+        Imgproc.cvtColor(src,src,Imgproc.COLOR_GRAY2BGR);
+        double result[][]=new double[contours.size()][2];
+        for(int i=0;i<contours.size();i++){
+            Moments moments=Imgproc.moments(contours.get(i),false);
+            double m00=moments.get_m00();
+            double m10=moments.get_m10();
+            double m01=moments.get_m01();
+            double x0=m10/m00;
+            double y0=m01/m00;
+            double arclength=Imgproc.arcLength(new MatOfPoint2f(contours.get(i).toArray()),true);
+            double area=Imgproc.contourArea(contours.get(i));
+            result[i][0]=arclength;
+            result[i][1]=area;
+            Core.circle(src,new Point(x0,y0),2,new Scalar(255,0,0,0),2,8,0);
+
+        }
+        Utils.matToBitmap(src,bitmap);
+        src.release();
+        dst.release();
+        hierarchy.release();
+        return result;
     }
 }

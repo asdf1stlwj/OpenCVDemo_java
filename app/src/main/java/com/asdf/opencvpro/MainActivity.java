@@ -55,7 +55,8 @@ public class MainActivity extends Activity {
                 command.equals(CommandConstants.CANNY_EDGE_COMMAND)||
                 command.equals(CommandConstants.HOUGH_LINE_COMMAND)||
                 command.equals(CommandConstants.HOUGH_CIRCLE_COMMAND)||
-                command.equals(CommandConstants.FIND_CONTOURS_COMMAND)){
+                command.equals(CommandConstants.FIND_CONTOURS_COMMAND)||
+                command.equals(CommandConstants.MEASURE_OBJECT_COMMAND)){
             Intent intent=new Intent(this,ThresholdProcessActivity.class);
             intent.putExtra("command",command);
             startActivity(intent);
