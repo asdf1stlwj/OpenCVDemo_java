@@ -79,6 +79,7 @@ public class CommonData implements CommandConstants{
         commonDatas.add(new CommonData(TEMPLATE_MATCH_COMMAND,34));
         commonDatas.add(new CommonData(FIND_CONTOURS_COMMAND,35));
         commonDatas.add(new CommonData(MEASURE_OBJECT_COMMAND,36));
+        commonDatas.add(new CommonData(FIND_FACE_COMMAND,37));
         return commonDatas;
     }
 }

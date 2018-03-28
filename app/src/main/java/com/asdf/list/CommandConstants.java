@@ -41,4 +41,5 @@ public interface CommandConstants {
     public static final String TEMPLATE_MATCH_COMMAND ="模板匹配";
     public static final String FIND_CONTOURS_COMMAND ="轮廓发现";
     public static final String MEASURE_OBJECT_COMMAND ="对象测量";
+    public static final String FIND_FACE_COMMAND ="人脸识别";
 }

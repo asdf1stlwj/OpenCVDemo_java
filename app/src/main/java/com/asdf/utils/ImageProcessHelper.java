@@ -10,12 +10,14 @@ import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.imgproc.Moments;
+import org.opencv.objdetect.CascadeClassifier;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -565,5 +567,25 @@ public class ImageProcessHelper {
         dst.release();
         hierarchy.release();
         return result;
+    }
+
+    //Harr特征数据与LBP特征数据区别:Harr里带有小数运算,LBP只有整数,因此速度上LBP更好
+    public static void faceDetect(Bitmap bitmap, CascadeClassifier detector){
+        Mat src=new Mat();
+        Mat dst=new Mat();
+        Utils.bitmapToMat(bitmap,src);
+        Imgproc.cvtColor(src,dst,Imgproc.COLOR_BGRA2GRAY);
+        MatOfRect faces=new MatOfRect();
+        //TODO 这里的参数要好好研究
+        detector.detectMultiScale(dst,faces,1.1,5,0,new Size(50,50),new Size());
+        List<Rect> faceList=faces.toList();
+        if (faceList.size()>0){
+            for (Rect rect:faceList){
+                Core.rectangle(src,rect.tl(),rect.br(),new Scalar(255,0,0,255),2,8,0);
+            }
+        }
+        Utils.matToBitmap(src,bitmap);
+        src.release();
+        dst.release();
     }
 }

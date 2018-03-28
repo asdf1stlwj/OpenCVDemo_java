@@ -1,6 +1,7 @@
 package com.asdf.opencvpro;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,8 +18,13 @@ import com.asdf.list.CommandConstants;
 import com.asdf.utils.ImageProcessHelper;
 
 import org.opencv.android.OpenCVLoader;
+import org.opencv.core.Core;
+import org.opencv.objdetect.CascadeClassifier;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class ProcessImageActivity extends Activity implements View.OnClickListener{
@@ -29,10 +35,12 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
     ImageView iv_test;
     Bitmap selectedBitmap;
     String commond;
+    private CascadeClassifier faceDetector;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_process_image);
+
         commond=getIntent().getStringExtra("command");
         btn_process = (Button) findViewById(R.id.btn_process);
         btn_sel= (Button) findViewById(R.id.btn_sel);
@@ -48,6 +56,28 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
         selectedBitmap=((BitmapDrawable) (iv_test.getDrawable())).getBitmap();
 
         initOpenCVLib();
+        try {
+            initFaceDetector();
+        } catch (IOException e) {
+            Log.i(TAG, e.getMessage());
+        }
+    }
+
+    private void initFaceDetector() throws IOException{
+        InputStream input=getResources().openRawResource(R.raw.lbpcascade_frontalface);
+        File cascadeDir=this.getDir("cascade",Context.MODE_PRIVATE);
+        File file=new File(cascadeDir.getAbsoluteFile(),"lbpcascade_frontalface.xml");
+        FileOutputStream output=new FileOutputStream(file);
+        byte[] buff=new byte[1024];
+        int len=0;
+        while ((len=input.read(buff))!=-1){
+            output.write(buff,0,len);
+        }
+        input.close();
+        output.close();
+        faceDetector=new CascadeClassifier(file.getAbsolutePath());
+        file.delete();
+        cascadeDir.delete();
     }
 
     private void initOpenCVLib() {
@@ -122,6 +152,8 @@ public class ProcessImageActivity extends Activity implements View.OnClickListen
                 }else if (commond.equals(CommandConstants.TEMPLATE_MATCH_COMMAND)){
                     Bitmap tlp=BitmapFactory.decodeResource(getResources(),R.drawable.templete);
                     ImageProcessHelper.templateMatchDemo(tlp,temp);
+                }else if (commond.equals(CommandConstants.FIND_FACE_COMMAND)){
+                    ImageProcessHelper.faceDetect(temp,faceDetector);
                 }
                 if (temp!=null){
                     iv_test.setImageBitmap(temp);
